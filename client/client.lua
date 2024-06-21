@@ -16,14 +16,18 @@ AddEventHandler('gameEventTriggered', function(event, data)
 end)
 
 function PlayerKilledByPlayer(killerServerId, killerClientId, deathCause)
-	local weapon = ESX.GetWeaponFromHash(deathCause)
-	print(weapon)
+	local WeaponData = ESX.GetWeaponFromHash(deathCause)
+	local WeaponName = WeaponData.name
+
+	if WeaponName == nil or type(WeaponName) ~= "string" then
+		WeaponName = ''
+	end
 	local data = {
 		killedByPlayer = true,
 		deathCause = deathCause,
 		killerServerId = killerServerId,
 		killerClientId = killerClientId,
-		weapon = weapon.name
+		weapon = WeaponName
 	}
 	if Config.DisplayKillfeed then
 		TriggerServerEvent('SY_Killfeed:onPlayerDead', data)
